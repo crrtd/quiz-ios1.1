@@ -1,5 +1,5 @@
 //
-//  AlertPresenter.swift
+//  QuizQuestion.swift
 //  MovieQuiz
 //
 //  Created by Vanya Pavlov on 12.02.2024.
