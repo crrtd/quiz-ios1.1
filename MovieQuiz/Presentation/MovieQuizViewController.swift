@@ -96,9 +96,9 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
         imageView.layer.borderColor = isCorrect ? UIColor.ysGreen.cgColor : UIColor.ysRed.cgColor
         
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in 
             
-            self.showNextQuestionOrResults()
+            self?.showNextQuestionOrResults()
         }
         
     }
