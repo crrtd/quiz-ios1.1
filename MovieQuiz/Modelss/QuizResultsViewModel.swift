@@ -6,8 +6,3 @@ public struct QuizResultsViewModel {
     let buttonText: String
 }
 
-struct smth {
-    
-}
-
-
