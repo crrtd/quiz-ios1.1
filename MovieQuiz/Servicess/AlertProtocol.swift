@@ -1,5 +1,6 @@
 import Foundation
+import UIKit
 
 protocol AlertPresenterDelegate: AnyObject {
-    func displayAlert(alertModel result: AlertModel)
+    func showAlert(alert: UIAlertController)
 }

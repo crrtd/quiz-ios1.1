@@ -3,13 +3,21 @@ import UIKit
 
 final class AlertPresenter {
     weak var delegate: AlertPresenterDelegate?
+    init(delegate: AlertPresenterDelegate? = nil) {
+        self.delegate = delegate
+    }
     
-    static func makeAlert(correct: Int, total: Int, message: String) -> AlertModel {
-        let alertModel = AlertModel(
-            title: "Этот раунд окончен!",
-            message: message,
-            buttonText: "Сыграть еще раз")
-        
-        return alertModel
+    func showAlert(alertModel: AlertModel) {
+        let alert = UIAlertController(
+            title: alertModel.title,
+            message: alertModel.message,
+            preferredStyle: .alert)
+        let action = UIAlertAction(
+            title: alertModel.buttonTexts,
+            style: .default) { _ in
+                alertModel.completions()
+            }
+        alert.addAction(action)
+        delegate?.showAlert(alert: alert)//changed
     }
 }

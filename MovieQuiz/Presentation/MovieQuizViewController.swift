@@ -28,9 +28,6 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
         questionFactory.requestNextQuestion()
 
         imageView.layer.cornerRadius = 20
-        
-        alertPresenter.delegate = self
-        
 //        print(NSHomeDirectory()) //файлы которые лежат в приложении
 //        UserDefaults.standard.set(true, forKey: "viewDidLoad")
 //        print(Bundle.main.bundlePath) //адрес где хранится само приложение
@@ -56,7 +53,6 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    
     //MARK: - func didReceiveNextQuestion
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
@@ -67,7 +63,6 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
             self?.show(quiz: viewModel)
         }
     }
-    
     
     //MARK: - func convert(model: ... )
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -83,6 +78,23 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
+    
+    //MARK: - func show(quiz result: ... )
+    private func show(quiz result: QuizResultsViewModel) {
+            let alertModel  = AlertModel(title: result.title,
+                                         message: result.text,
+                                         buttonTexts: result.buttonText,
+                                         completions: {[ weak self ] in
+                                guard let self = self else {
+                                return
+        }
+                                self.currentQuestionIndex = 0
+                                self.correctAnswers = 0
+                self.questionFactory.requestNextQuestion()
+            })
+
+        alertPresenter.showAlert(alertModel: alertModel)
+        }
     
     //MARK: - func showAnswerResult
     private func showAnswerResult(isCorrect: Bool) {
@@ -103,26 +115,9 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
         
     }
 
-    //MARK: - func displayAlert
-    func displayAlert(alertModel result: AlertModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.message,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            
-            guard let self = self else { return }
-            
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-            questionFactory.requestNextQuestion()
-        }
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
+    //MARK: - func showAlert
+    internal func showAlert(alert: UIAlertController) {
+        self.present(alert, animated: true)
     }
 
     //MARK: - func showNextQuestionOrResults
@@ -130,13 +125,21 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
         if currentQuestionIndex == questionsAmount - 1 {
             
             statisticService.store(correct: correctAnswers, total: questionsAmount)
+            let quizCount = statisticService.gamesCount
+            let bestGame = statisticService.bestGame
+            let formAccuracy = "\(String(format: "%.2f", statisticService.totalAccuracy))%"
             
-            let text = "Ваш результат; \(String(correctAnswers))" + "/10" + "\n" + "Количество сыгранных квизов: \(statisticService.gamesCount)" + "\n" + "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total)(\(statisticService.bestGame.date.dateTimeString))" + "\n" + "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+            let text = """
+                    Ваш результат: \(correctAnswers)/\(questionsAmount)
+                    Количество сыгранных раундов: \(quizCount)
+                    Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
+                    Средняя точность: \(formAccuracy)
+                    """
+            let viewModel = QuizResultsViewModel(title: "Этот раунд окончен!",
+                                                 text: text,
+                                                 buttonText: "Сыграть еще раз")
             
-            alertModel = AlertPresenter.makeAlert(correct: correctAnswers, total: questionsAmount, message: text)
-            guard let alertModel = alertModel else { return }
-            
-            self.displayAlert(alertModel: alertModel)
+            show(quiz: viewModel)
             
         } else {
             currentQuestionIndex += 1
@@ -144,5 +147,26 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
             self.questionFactory.requestNextQuestion()
         }
         imageView.layer.borderColor = UIColor.clear.cgColor
+        
+        func showAlert(quiz result: AlertModel) {
+            let alert = UIAlertController(
+                title: result.title,
+                message: result.message,
+                preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: result.buttonTexts, style: .default) { [weak self] _ in
+                
+                guard let self = self else { return }
+                
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                
+                questionFactory.requestNextQuestion()
+            }
+            
+            alert.addAction(action)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
