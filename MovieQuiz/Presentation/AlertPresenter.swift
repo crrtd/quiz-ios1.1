@@ -16,8 +16,12 @@ final class AlertPresenter {
             title: alertModel.buttonTexts,
             style: .default) { _ in
                 alertModel.completions()
-            }
+                
+            }   
+        alert.view.accessibilityIdentifier = alertModel.alertId
         alert.addAction(action)
         delegate?.showAlert(alert: alert)//changed
+        
+        
     }
 }

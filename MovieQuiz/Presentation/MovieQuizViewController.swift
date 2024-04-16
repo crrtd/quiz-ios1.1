@@ -24,6 +24,7 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
 //        imageView.layer.borderWidth = 8
 //        imageView.layer.borderColor = UIColor.ysBlack.cgColor
         
+        
         alertPresenter = AlertPresenter(delegate: self)
         alertPresenter.delegate = self
         questionFactory?.delegate = self
@@ -66,7 +67,8 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
         let model = AlertModel(
             title: "Ошибка",
             message: message,
-            buttonTexts: "Попробовать еще раз") { [weak self] in
+            buttonTexts: "Попробовать еще раз",
+            alertId: "Game results") { [weak self] in
                 guard let self = self else { return }
                 
                 self.currentQuestionIndex = 0
@@ -127,12 +129,13 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
             let alertModel  = AlertModel(title: result.title,
                                          message: result.text,
                                          buttonTexts: result.buttonText,
+                                         alertId: "Game results", 
                                          completions: {[ weak self ] in
-                                guard let self = self else {
-                                return
-        }
-                                self.currentQuestionIndex = 0
-                                self.correctAnswers = 0
+                guard let self = self else {
+                    return
+                }
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
                 self.questionFactory?.requestNextQuestion()
             })
 
@@ -161,6 +164,7 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
     //MARK: - func showAlert
     internal func showAlert(alert: UIAlertController) {
         self.present(alert, animated: true)
+//        alert.view.accessibilityIdentifier = "Game results"
     }
 
     //MARK: - func showNextQuestionOrResults
@@ -207,8 +211,7 @@ final class MovieQuizViewController: UIViewController, QuestionFacotryDelegate, 
                 questionFactory?.requestNextQuestion()
             }
             
-            alert.addAction(action)
-            
+            alert.addAction(action)            
             self.present(alert, animated: true, completion: nil)
         }
     }
