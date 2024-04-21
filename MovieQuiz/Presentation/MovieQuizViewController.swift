@@ -47,20 +47,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     //MARK: - func showNetworkError
     func showNetworkError(message: String) {
-//        hideLoadingIndicator()
-//        
-//        let alert = UIAlertController(
-//            title: "Ошибка",
-//            message: message,
-//            preferredStyle: .alert)
-//        let action = UIAlertAction(
-//            title: "Попробовать еще раз",
-//            style: .default) { [weak self] _ in
-//                guard let self = self else { return }
-//                self.presenter.restartGame()
-//            }
-//        alert.addAction(action)
-        
         hideLoadingIndicator()
         
         let alertModel = AlertModel(
