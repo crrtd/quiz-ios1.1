@@ -42,7 +42,7 @@ final class MovieQuizPresenter: QuestionFacotryDelegate {
     }
     
     //MARK: - func isLastQuestion
-    func isLastQuiestion() -> Bool {
+    private func isLastQuiestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
     
@@ -52,7 +52,7 @@ final class MovieQuizPresenter: QuestionFacotryDelegate {
     }
     
     //MARK: - func switchToNextQuestion
-    func switchToNextQuestion() {
+    private func switchToNextQuestion() {
         currentQuestionIndex += 1
     }
     
@@ -66,13 +66,13 @@ final class MovieQuizPresenter: QuestionFacotryDelegate {
     }
     
     //MARK: - func didAnswer
-    func didAnswer(isYes: Bool) {
+    private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else { return }
         let givenAnswer = isYes
         proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    func didAnswer(isCorrectAnswer: Bool) {
+    private func didAnswer(isCorrectAnswer: Bool) {
         if isCorrectAnswer {
             correctAnswers += 1
         }
@@ -100,7 +100,7 @@ final class MovieQuizPresenter: QuestionFacotryDelegate {
     }
     
     //MARK: - func makeResultMessage
-    func makeResultMessage() -> String {
+    private func makeResultMessage() -> String {
         statisticService.store(correct: correctAnswers, total: questionsAmount)
         
         let bestGame = statisticService.bestGame
@@ -113,7 +113,7 @@ final class MovieQuizPresenter: QuestionFacotryDelegate {
     }
     
     //MARK: - func showNextQuestionOrResults
-      func proceedToNextQuestionOrResults() {
+      private func proceedToNextQuestionOrResults() {
           if self.isLastQuiestion() {
               
               let text = makeResultMessage()
@@ -135,7 +135,7 @@ final class MovieQuizPresenter: QuestionFacotryDelegate {
       }
     
     //MARK: - func proceedWithAnswer
-    func proceedWithAnswer(isCorrect: Bool) {
+    private func proceedWithAnswer(isCorrect: Bool) {
         didAnswer(isCorrectAnswer: isCorrect)
         
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
