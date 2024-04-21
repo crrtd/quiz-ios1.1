@@ -1,8 +1,18 @@
-//
-//  MovieQuizViewControllerProtocol.swift
-//  MovieQuiz
-//
-//  Created by Vanya Pavlov on 20.04.2024.
-//
-
 import Foundation
+import UIKit
+
+protocol MovieQuizViewControllerProtocol: AnyObject {
+    var yesButton: UIButton! { get }
+    var noButton: UIButton! { get }
+    var activityIndicator: UIActivityIndicatorView! { get set }
+    
+    func showLoadingIndicator()
+    func hideLoadingIndicator()
+    
+    func show(quiz step: QuizStepViewModel)
+    func show(quiz result: AlertModel)
+    
+    func highlightImageBorder(isCorrectAnswer: Bool)
+    
+    func showNetworkError(message: String)
+}

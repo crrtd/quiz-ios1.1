@@ -7,7 +7,7 @@ final class AlertPresenter {
         self.delegate = delegate
     }
     
-    func showAlert(alertModel: AlertModel) {
+    func showAlert(controller: UIViewController, alertModel: AlertModel) {
         let alert = UIAlertController(
             title: alertModel.title,
             message: alertModel.message,
@@ -18,10 +18,9 @@ final class AlertPresenter {
                 alertModel.completions()
                 
             }   
-        alert.view.accessibilityIdentifier = alertModel.alertId
+        alert.view.accessibilityIdentifier = "Game results"
         alert.addAction(action)
-        delegate?.showAlert(alert: alert)//changed
-        
-        
+//        delegate?.showAlert(alert: alert)//changed
+        controller.present(alert, animated: true, completion: nil)
     }
 }
