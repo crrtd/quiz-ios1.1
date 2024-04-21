@@ -47,19 +47,30 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     //MARK: - func showNetworkError
     func showNetworkError(message: String) {
+//        hideLoadingIndicator()
+//        
+//        let alert = UIAlertController(
+//            title: "Ошибка",
+//            message: message,
+//            preferredStyle: .alert)
+//        let action = UIAlertAction(
+//            title: "Попробовать еще раз",
+//            style: .default) { [weak self] _ in
+//                guard let self = self else { return }
+//                self.presenter.restartGame()
+//            }
+//        alert.addAction(action)
+        
         hideLoadingIndicator()
         
-        let alert = UIAlertController(
+        let alertModel = AlertModel(
             title: "Ошибка",
             message: message,
-            preferredStyle: .alert)
-        let action = UIAlertAction(
-            title: "Попробовать еще раз",
-            style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                self.presenter.restartGame()
-            }
-        alert.addAction(action)
+            buttonTexts: "Попробовать еще раз",
+            completions: { [weak self] in
+                self?.presenter.restartGame()
+            })
+        self.show(quiz: alertModel)
     }
 
     //MARK: - func highlightImageBorder
@@ -80,22 +91,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     //MARK: - func show(quiz result: ... )
     func show(quiz result: AlertModel) {
-//        let message = presenter.makeResultMessage()
-//        
-//        let alert = UIAlertController(
-//            title: result.title,
-//            message: message,
-//            preferredStyle: .alert)
-//        
-//        let action = UIAlertAction(
-//            title: result.buttonText,
-//            style: .default) { [weak self] _ in
-//                guard let self = self else { return }
-//                self.presenter.restartGame()
-//            }
-//        
-//        alert.addAction(action)
-//        self.present(alert, animated: true, completion: nil)
         alertPresenter.showAlert(controller: self, alertModel: result)
     }
 }
