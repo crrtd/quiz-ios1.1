@@ -11,11 +11,11 @@ struct GameRecord: Codable {
     let date: Date
     
     init(from decoder: any Decoder) throws {
-            let container = try decoder.container(keyedBy: Keys.self)
-            self.correct = try container.decode(Int.self, forKey: .correct)
-            self.total = try container.decode(Int.self, forKey: .total)
-            self.date = try container.decode(Date.self, forKey: .date)
-        }
+        let container = try decoder.container(keyedBy: Keys.self)
+        self.correct = try container.decode(Int.self, forKey: .correct)
+        self.total = try container.decode(Int.self, forKey: .total)
+        self.date = try container.decode(Date.self, forKey: .date)
+    }
     
     init(correct: Int, total: Int, date: Date) {
         self.correct = correct

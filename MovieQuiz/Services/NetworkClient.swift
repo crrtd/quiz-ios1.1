@@ -1,9 +1,4 @@
 import Foundation
-
-
-
-
-
 //MARK: - struct NetworkClient
 struct NetworkClient: NetworkRouting { //загрузка данных по URL
     

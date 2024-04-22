@@ -9,9 +9,9 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet weak private var imageView: UIImageView!
     @IBOutlet weak private var textLabel: UILabel!
     @IBOutlet weak private var counterLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var yesButton: UIButton!
-    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak internal var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak internal var yesButton: UIButton!
+    @IBOutlet weak internal var noButton: UIButton!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
